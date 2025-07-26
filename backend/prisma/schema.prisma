@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Appointment {
+  id            Int      @id @default(autoincrement())
+  date          DateTime
+  time          String   // e.g., "09:00", "09:30"
+  barber        String
+  service       String
+  price         Int
+  paymentMethod String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("appointments")
+}
+
+model ExtraIncome {
+  id        Int      @id @default(autoincrement())
+  date      DateTime
+  product   String
+  amount    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("extra_incomes")
+}
+
+model Expense {
+  id        Int      @id @default(autoincrement())
+  date      DateTime
+  motivo    String
+  amount    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("expenses")
+}
+
+model Price {
+  id      Int    @id @default(autoincrement())
+  barber  String
+  service String
+  price   Int
+
+  @@unique([barber, service])
+  @@map("prices")
+}
+
+model Admin {
+  id           Int    @id @default(autoincrement())
+  username     String @unique
+  passwordHash String
+
+  @@map("admins")
+}
